@@ -1,0 +1,51 @@
+body,html{
+    overflow: auto;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(/design/images/fondo.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.img__logo{
+    width: 600px;
+    height: 600px;
+    border-radius: 20px;
+}
+.as-box-shadow{
+background-color: #1565c0;
+border-radius: 10px;
+padding: 10px 50px;
+position: relative;
+top: 10px;
+box-shadow: 2px 6px 12px 0px rgba(0,0,0,0.83);
+-webkit-box-shadow: 2px 6px 12px 0px rgba(0,0,0,0.83);
+-moz-box-shadow: 2px 6px 12px 0px rgba(0,0,0,0.83);
+margin:0px 5px; 
+}
+.as-font-white{
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+
+@media only screen and (max-width:900px){
+    .img__logo{
+        width: 500px;
+        height: 500px;
+    }
+}
+
+
+@media only screen and (max-width:600px){
+    .img__logo{
+        width: 300px;
+        height: 300px;
+    }
+}
+
+
