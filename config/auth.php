@@ -13,10 +13,12 @@ return [
     |
     */
 
-    'defaults' => [
-        'guard' => 'web',
-        'passwords' => 'users',
-    ],
+
+        'defaults' => [
+            'guard' => 'api', //modificado
+            'passwords' => 'users',
+        ],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -40,6 +42,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        //agregado
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'is-usuario',
+        ],
     ],
 
     /*
@@ -60,15 +67,17 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        //'users' => [
+        //  'driver' => 'eloquent',
+        //'model' => App\Models\User::class,
+        // ],
+
+        //agregado
+        'is-usuario' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Usuario::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

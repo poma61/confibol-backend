@@ -5,9 +5,7 @@ use App\Http\Controllers\Api\PersonalController;
 use App\Http\Controllers\Api\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
-
 Route::post('/auth/login', [AuthController::class, 'login']);
-
 
 Route::prefix('/auth')->middleware(['jwt'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -15,7 +13,6 @@ Route::prefix('/auth')->middleware(['jwt'])->group(function () {
     Route::post('/verify-role', [AuthController::class, 'isRole']); //para verificar el roles
     Route::post('/actualizar-credenciales', [AuthController::class, 'updateCredentials']);
 });
-
 
 Route::prefix('/security-frontend')->middleware(['jwt'])->group(function () {
     Route::post('/verify-role', [AuthController::class, 'isRole']); //para verificar el roles

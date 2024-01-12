@@ -35,7 +35,6 @@ class Usuario extends Authenticatable implements JWTSubject
         return [];
     }
 
-
     public function isPersonal()
     {
         //hace una consulta "select * from `personals` where `personals`.`id` = ?"
