@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('personals', function (Blueprint $table) {
             $table->engine = 'InnoDB ROW_FORMAT=DYNAMIC';
-
             $table->id();
             $table->string('nombres', 200);
             $table->string('apellido_paterno', 200);
@@ -26,10 +25,9 @@ return new class extends Migration
             $table->text('direccion')->nullable();
             $table->string('foto');
             $table->boolean('status');
-            //$table->foreignId('id_desarrolladora');
+            $table->foreignId('id_ciudad');
             $table->timestamps();
-
-          
+            $table->foreign('id_ciudad')->references('id')->on('ciudades');
         });
     }
 

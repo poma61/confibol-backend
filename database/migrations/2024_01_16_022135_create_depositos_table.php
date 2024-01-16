@@ -6,19 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
     public function up(): void
     {
-        Schema::create('ciudades', function (Blueprint $table) {
-            $table->engine = 'InnoDB ROW_FORMAT=DYNAMIC';
+        Schema::create('depositos', function (Blueprint $table) {
             $table->id();
             $table->string('nombres');
+            $table->string('direccion');
+            $table->foreignId('id_ciudad');
+            $table->boolean('status');
             $table->timestamps();
+
+            $table->foreign('id_ciudad')->references('id')->on('ciudades');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('ciudades');
+        Schema::dropIfExists('depositos');
     }
 };

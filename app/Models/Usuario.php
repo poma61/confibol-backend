@@ -40,15 +40,15 @@ class Usuario extends Authenticatable implements JWTSubject
         //hace una consulta "select * from `personals` where `personals`.`id` = ?"
         //tomando el id_personal del modelo Usuario
         //return $this->belongsTo(Personal::class,'id_personal')->first();
-        return  Usuario::join('usuario_roles', 'usuario_roles.id_user', '=', 'usuarios.id')
-            ->join('roles', 'roles.id', '=', 'usuario_roles.id_role')
+        return  Usuario::join('usuarios_has_roles', 'usuarios_has_roles.id_user', '=', 'usuarios.id')
+            ->join('roles', 'roles.id', '=', 'usuarios_has_roles.id_role')
             ->join('personals', 'personals.id', '=', 'usuarios.id_personal')
-            ->join('desarrolladoras', 'desarrolladoras.id', '=', 'personals.id_desarrolladora')
+            ->join('ciudades', 'ciudades.id', '=', 'personals.id_ciudad')
             ->select(
                 'usuarios.user',
                 'roles.rol_name',
                 'personals.*',
-                'desarrolladoras.nombres as desarrolladora'
+                'ciudades.nombres as ciudad'
             ) //no es necesario verificar el status porque en toda peticion en el middleware JwtAuthenticate verifica el status de los datos
             ->where('usuarios.id', Auth::user()->id)
             ->first();

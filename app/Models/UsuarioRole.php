@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ciudad extends Model
+class UsuarioRole extends Model
 {
     use HasFactory;
-
-    protected $table = 'ciudades';
+    protected $table="usuarios_has_roles";
 
 }//class

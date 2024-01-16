@@ -9,16 +9,19 @@ return new class extends Migration
 
     public function up(): void
     {
-        Schema::create('ciudades', function (Blueprint $table) {
+        Schema::create('productos_lotes', function (Blueprint $table) {
             $table->engine = 'InnoDB ROW_FORMAT=DYNAMIC';
             $table->id();
-            $table->string('nombres');
+            $table->foreignId('id_producto');
+            $table->boolean('status');
             $table->timestamps();
+
+            $table->foreign('id_producto')->references('id')->on('productos');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('ciudades');
+        Schema::dropIfExists('productos_lotes');
     }
 };

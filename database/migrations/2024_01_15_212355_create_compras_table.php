@@ -9,16 +9,20 @@ return new class extends Migration
 
     public function up(): void
     {
-        Schema::create('ciudades', function (Blueprint $table) {
+        Schema::create('compras', function (Blueprint $table) {
             $table->engine = 'InnoDB ROW_FORMAT=DYNAMIC';
             $table->id();
-            $table->string('nombres');
+            $table->longText('nota');
+            $table->date('fecha');
+            $table->boolean('status');
+            $table->foreignId('id_ciudad');
             $table->timestamps();
+
+            $table->foreign('id_ciudad')->references('id')->on('ciudades');
         });
     }
-
     public function down(): void
     {
-        Schema::dropIfExists('ciudades');
+        Schema::dropIfExists('compras');
     }
 };
