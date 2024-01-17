@@ -36,7 +36,15 @@ Route::prefix('/usuario')->middleware(['jwt'])->group(function () {
 Route::prefix('/deposito')->middleware(['jwt'])->group(function () {
     Route::post('/all-data', [DepositoController::class, 'index']);
     Route::post('/new-data', [DepositoController::class, 'store']);
-    Route::post('/edit-data', [DepositoController::class, 'update']);
+    Route::put('/edit-data', [DepositoController::class, 'update']);
+    Route::post('/delete-data', [DepositoController::class, 'destroy']);
+});
+
+Route::prefix('/compra')->middleware(['jwt'])->group(function () {
+    Route::post('/all-data', [DepositoController::class, 'indexCompra']);
+    Route::post('/all-data-compras-productos', [DepositoController::class, 'indexCompraProducto']);
+    Route::post('/new-data', [DepositoController::class, 'store']);
+    Route::put('/edit-data', [DepositoController::class, 'update']);
     Route::post('/delete-data', [DepositoController::class, 'destroy']);
 });
 

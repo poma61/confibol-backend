@@ -12,6 +12,8 @@ return new class extends Migration
         Schema::create('productos', function (Blueprint $table) {
             $table->engine = 'InnoDB ROW_FORMAT=DYNAMIC';
             $table->id();
+            $table->string('nombres');
+            $table->string('imagen');
             $table->boolean('status');
             $table->foreignId('id_categoria');
             $table->timestamps();

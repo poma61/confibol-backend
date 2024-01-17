@@ -12,8 +12,8 @@ return new class extends Migration
         Schema::create('compras', function (Blueprint $table) {
             $table->engine = 'InnoDB ROW_FORMAT=DYNAMIC';
             $table->id();
-            $table->longText('nota');
-            $table->date('fecha');
+            $table->longText('nota')->nullable();
+            $table->date('fecha_compra');
             $table->boolean('status');
             $table->foreignId('id_ciudad');
             $table->timestamps();

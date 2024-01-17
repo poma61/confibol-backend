@@ -13,11 +13,11 @@ return new class extends Migration
             $table->engine = 'InnoDB ROW_FORMAT=DYNAMIC';
             $table->id();
             $table->string('tipo_compra', 100);
-            $table->string('recibo');
-            $table->string('factura');
-            $table->string('lista_empaque');
-            $table->string('poliza');
-            $table->string('factura_importacion');
+            $table->string('recibo')->nullable();
+            $table->string('factura')->nullable();
+            $table->string('lista_empaque')->nullable();
+            $table->string('poliza')->nullable();
+            $table->string('factura_importacion')->nullable();
             $table->foreignId('id_compra');
             $table->boolean('status');
             $table->timestamps();

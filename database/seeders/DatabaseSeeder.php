@@ -2,9 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Categoria;
 use App\Models\Ciudad;
+use App\Models\Deposito;
 use App\Models\Grupo;
 use App\Models\Personal;
+use App\Models\Producto;
 use App\Models\Role;
 use App\Models\Usuario;
 use App\Models\UsuarioRole;
@@ -16,12 +19,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         Ciudad::insert([
+            ['nombres' => 'La-Paz'],
             ['nombres' => 'Santa-Cruz'],
             ['nombres' => 'Chuquisaca'],
             ['nombres' => 'Cochabamba'],
             ['nombres' => 'Potosi'],
             ['nombres' => 'Beni'],
-            ['nombres' => 'La-Paz'],
             ['nombres' => 'Pando'],
             ['nombres' => 'Tarija'],
             ['nombres' => 'Oruro'],
@@ -161,6 +164,27 @@ class DatabaseSeeder extends Seeder
         UsuarioRole::create([
             'id_user' => 1,
             'id_role' => 1,
+            'status' => true,
+        ]);
+
+        //datos de prueba
+        Deposito::create([
+            'nombres' => 'Deposito 1',
+            'direccion' => 'La Paz',
+            'id_ciudad' => 1,
+            'status' => true,
+        ]);
+        
+        Categoria::create([
+            'nombres' => 'Pasteleria',
+            'id_ciudad' => 1,
+            'status' => true,
+        ]);
+
+        Producto::create([
+            'nombres' => 'Mermelada',
+            'imagen' => 'Caramelo',
+            'id_categoria' => 1,
             'status' => true,
         ]);
     } //run
