@@ -23,7 +23,10 @@ class Usuario extends Authenticatable implements JWTSubject
         'password',
         'status',
         'updated_at',
+        'created_at',
     ];
+
+
 
     public function getJWTIdentifier(): mixed
     {

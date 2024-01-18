@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CompraRequest;
+use App\Http\Requests\CompraByCompDocumentoRequest;
 use App\Models\Ciudad;
 use App\Models\Compra;
-use App\Models\ProductoLote;
+use App\Models\DocumentoCompra;
 use Illuminate\Http\Request;
 use Throwable;
 
 class CompraController extends Controller
 {
 
-    public function indexCompra(Request $request)
+    public function index(Request $request)
     {
         try {
             $ciudad = Ciudad::where('nombres', $request->input('ciudad'))
@@ -31,10 +31,17 @@ class CompraController extends Controller
             $compra = Compra::join('ciudades', 'ciudades.id', '=', 'compras.id_ciudad')
                 ->join('documentos_compras', 'documentos_compras.id_compra', '=', 'compras.id')
                 ->select(
+                    'documentos_compras.tipo_compra',
+                    'documentos_compras.recibo',
+                    'documentos_compras.factura',
+                    'documentos_compras.lista_empaque',
+                    'documentos_compras.poliza',
+                    'documentos_compras.factura_importacion',
+                    'documentos_compras.id_compra',
                     'compras.*',
                 )
                 ->where('compras.status', true)
-                ->where('tipo_compra', $request->input('tipo_compra'))
+                ->where('documentos_compras.status', true)
                 ->where('ciudades.id', $ciudad->id)
                 ->get();
 
@@ -50,48 +57,10 @@ class CompraController extends Controller
                 'message' => $th->getMessage(),
             ], 500);
         }
-    } //indexCompra
-
-    public function indexCompraProducto(Request $request)
-    {
-        try {
-            $ciudad = Ciudad::where('nombres', $request->input('ciudad'))
-                ->first();
-
-            //debemos verificar si la ciudad existe en la base de datos por seguridad y estabilidad del sistema
-            if ($ciudad == null) {
-                return response()->json([
-                    'records' => null,
-                    'status' => false,
-                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}!",
-                ], 404);
-            }
-
-            $compra = ProductoLote::join('productos', 'productos.id', '=', 'producto_lotes.id_producto')
-                ->select(
-                    'producto_lotes.*',
-                    'productos.nombres',
-                )
-                ->where('status', true)
-                ->where('id_compra', $request->input('id_compra'))
-                ->get();
-
-            return response()->json([
-                'records' => $compra,
-                'status' => true,
-                'message' => "OK",
-            ], 200);
-        } catch (Throwable $th) {
-            return response()->json([
-                'records' => null,
-                'status' => false,
-                'message' => $th->getMessage(),
-            ], 500);
-        }
-    } //indexCompra
+    } //index
 
 
-    public function store(CompraRequest $request)
+    public function store(CompraByCompDocumentoRequest $request)
     {
         try {
             $ciudad = Ciudad::where('nombres', $request->input('ciudad'))
@@ -111,14 +80,27 @@ class CompraController extends Controller
             $compra->id_ciudad = $ciudad->id;
             $compra->save();
 
-            //agregamos la lista de productos
-            $productos = $request->input('producto_lotes');
-            foreach ($productos as $item_producto) {
-                $producto = new ProductoLote($item_producto);
-                $producto->status = true;
-                $producto->id_compra = $compra->id;
-                $producto->save();
-            }
+            //agregamos los documentos de la compra
+            $documento_compra = new DocumentoCompra($request->input('documento_compra'));
+            $documento_compra->status = true;
+            $documento_compra->id_compra = $compra->id;
+            $documento_compra->save();
+
+            $id_compra = $compra->id;
+            $compra = Compra::join('ciudades', 'ciudades.id', '=', 'compras.id_ciudad')
+                ->join('documentos_compras', 'documentos_compras.id_compra', '=', 'compras.id')
+                ->select(
+                    'documentos_compras.tipo_compra',
+                    'documentos_compras.recibo',
+                    'documentos_compras.factura',
+                    'documentos_compras.lista_empaque',
+                    'documentos_compras.poliza',
+                    'documentos_compras.factura_importacion',
+                    'documentos_compras.id_compra',
+                    'compras.*',
+                )
+                ->where('compras.id', $id_compra)
+                ->first();
 
             return response()->json([
                 'record' => $compra,
@@ -134,24 +116,20 @@ class CompraController extends Controller
         }
     }
 
-    public function update(CompraRequest $request)
+    public function update(CompraByCompDocumentoRequest $request)
     {
         try {
-            $ciudad = Ciudad::where('nombres', $request->input('ciudad'))
-                ->first();
 
-            //debemos verificar si la ciudad existe en la base de datos por seguridad y estabilidad del sistema
-            if ($ciudad == null) {
-                return response()->json([
-                    'status' => false,
-                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}!",
-                ], 404);
-            }
-
+            $request_compra = $request->input("compra");
             $compra = Compra::where('status', true)
-                ->where('id', $request->input('id'))
+                ->where('id', $request_compra['id'])
                 ->first();
-            if ($compra == null) {
+            $documento_compra = DocumentoCompra::where('status', true)
+                ->where('id_compra', $request_compra['id'])
+                ->first();
+
+            //verificamos si el registro existe por estabilidad del sistema
+            if ($compra == null || $documento_compra == null) {
                 return response()->json([
                     'record' => null,
                     'status' => false,
@@ -159,7 +137,25 @@ class CompraController extends Controller
                 ], 404);
             }
 
-            $compra->update($request->all());
+            $compra->update($request_compra);
+            $documento_compra->update($request->input("documento_compra"));
+
+
+            $id_compra = $compra->id;
+            $compra = Compra::join('ciudades', 'ciudades.id', '=', 'compras.id_ciudad')
+                ->join('documentos_compras', 'documentos_compras.id_compra', '=', 'compras.id')
+                ->select(
+                    'documentos_compras.tipo_compra',
+                    'documentos_compras.recibo',
+                    'documentos_compras.factura',
+                    'documentos_compras.lista_empaque',
+                    'documentos_compras.poliza',
+                    'documentos_compras.factura_importacion',
+                    'documentos_compras.id_compra',
+                    'compras.*',
+                )
+                ->where('compras.id', $id_compra)
+                ->first();
 
             return response()->json([
                 'record' => $compra,
@@ -177,24 +173,19 @@ class CompraController extends Controller
 
     public function destroy(Request $request)
     {
-
         try {
-            $ciudad = Ciudad::where('nombres', $request->input('ciudad'))
-                ->first();
-
-            //debemos verificar si la ciudad existe en la base de datos por seguridad y estabilidad del sistema
-            if ($ciudad == null) {
-                return response()->json([
-                    'status' => false,
-                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}!",
-                ], 404);
-            }
 
             $compra = Compra::where('status', true)
-                ->where('id', $request->input('id'))
+                ->where('id', $request->input("id"))
                 ->first();
-            if ($compra == null) {
+            $documento_compra = DocumentoCompra::where('status', true)
+                ->where('id_compra', $request->input("id"))
+                ->first();
+
+            //verificamos si el registro existe por estabilidad del sistema
+            if ($compra == null || $documento_compra == null) {
                 return response()->json([
+                    'record' => null,
                     'status' => false,
                     'message' => "Este registro no se encuentra en el sistema!",
                 ], 404);
@@ -202,6 +193,8 @@ class CompraController extends Controller
 
             $compra->status = false;
             $compra->update();
+            $documento_compra->status = false;
+            $documento_compra->update();
 
             return response()->json([
                 'status' => true,
@@ -214,4 +207,4 @@ class CompraController extends Controller
             ], 500);
         }
     }
-}//class
+} //class

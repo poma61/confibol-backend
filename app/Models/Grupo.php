@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Grupo extends Model
 {
     use HasFactory;
+
+    protected $hidden = [
+        'updated_at',
+        'status',
+        'created_at',
+    ];
+    
 }

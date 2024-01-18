@@ -4,39 +4,24 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 //add
-use App\Http\Requests\DepositoRequest;
-use App\Models\Ciudad;
-use App\Models\Deposito;
+use App\Models\ProductoLote;
 use Illuminate\Http\Request;
 use Throwable;
+use App\Http\Requests\LoteProductoRequest;
 
-class DepositoController extends Controller
+
+class LoteProductoController extends Controller
 {
-
     public function index(Request $request)
     {
         try {
-            $ciudad = Ciudad::where('nombres', $request->input('ciudad'))
-                ->first();
 
-            //debemos verificar si la ciudad existe en la base de datos por seguridad y estabilidad del sistema
-            if ($ciudad == null) {
-                return response()->json([
-                    'status' => false,
-                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}",
-                ], 404);
-            }
-
-            $deposito = Deposito::join('ciudades', 'ciudades.id', '=', 'depositos.id_ciudad')
-                ->select(
-                    'depositos.*',
-                )
-                ->where('depositos.status', true)
-                ->where('ciudades.id', $ciudad->id)
+            $producto_lote = ProductoLote::where('status', true)
+                ->where('id_compra', $request->input("id_compra"))
                 ->get();
 
             return response()->json([
-                'records' => $deposito,
+                'records' => $producto_lote,
                 'status' => true,
                 'message' => "OK",
             ], 200);
@@ -47,30 +32,19 @@ class DepositoController extends Controller
                 'message' => $th->getMessage(),
             ], 500);
         }
-    }
+    } //index
 
-
-    public function store(DepositoRequest $request)
+    public function store(LoteProductoRequest $request)
     {
         try {
-            $ciudad = Ciudad::where('nombres', $request->input('ciudad'))
-                ->first();
 
-            //debemos verificar si la ciudad existe en la base de datos por seguridad y estabilidad del sistema
-            if ($ciudad == null) {
-                return response()->json([
-                    'status' => false,
-                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}",
-                ], 404);
-            }
-
-            $deposito = new Deposito($request->all());
-            $deposito->status = true;
-            $deposito->id_ciudad = $ciudad->id;
-            $deposito->save();
+            //agregamos la producto_lote realizada
+            $producto_lote = new ProductoLote($request->all());
+            $producto_lote->status = true;
+            $producto_lote->save();
 
             return response()->json([
-                'record' => $deposito,
+                'record' => $producto_lote,
                 'status' => true,
                 'message' => "Registro guardado!",
             ], 200);
@@ -83,15 +57,15 @@ class DepositoController extends Controller
         }
     }
 
-
-    public function update(DepositoRequest $request)
+    public function update(LoteProductoRequest $request)
     {
         try {
-
-            $deposito = Deposito::where('status', true)
+            $producto_lote = ProductoLote::where('status', true)
                 ->where('id', $request->input('id'))
                 ->first();
-            if ($deposito == null) {
+
+            //verificamos si el registro existe por estabilidad del sistema
+            if ($producto_lote == null) {
                 return response()->json([
                     'record' => null,
                     'status' => false,
@@ -99,10 +73,10 @@ class DepositoController extends Controller
                 ], 404);
             }
 
-            $deposito->update($request->all());
+            $producto_lote->update($request->all());
 
             return response()->json([
-                'record' => $deposito,
+                'record' => $producto_lote,
                 'status' => true,
                 'message' => "Registro actualizado!",
             ], 200);
@@ -115,23 +89,24 @@ class DepositoController extends Controller
         }
     }
 
-
     public function destroy(Request $request)
     {
         try {
-
-            $deposito = Deposito::where('status', true)
+            $producto_lote = ProductoLote::where('status', true)
                 ->where('id', $request->input('id'))
                 ->first();
-            if ($deposito == null) {
+
+            //verificamos si el registro existe por estabilidad del sistema
+            if ($producto_lote == null) {
                 return response()->json([
+                    'record' => null,
                     'status' => false,
                     'message' => "Este registro no se encuentra en el sistema!",
                 ], 404);
             }
 
-            $deposito->status = false;
-            $deposito->update();
+            $producto_lote->status = false;
+            $producto_lote->update();
 
             return response()->json([
                 'status' => true,
@@ -144,4 +119,4 @@ class DepositoController extends Controller
             ], 500);
         }
     }
-}//class
+} //class

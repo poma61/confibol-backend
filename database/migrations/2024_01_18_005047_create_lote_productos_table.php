@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
+ 
     public function up(): void
     {
-        Schema::create('producto_lotes', function (Blueprint $table) {
+        Schema::create('lote_productos', function (Blueprint $table) {
             $table->engine = 'InnoDB ROW_FORMAT=DYNAMIC';
             $table->id();
             $table->string('fecha_vencimiento');
@@ -28,8 +28,9 @@ return new class extends Migration
         });
     }
 
+
     public function down(): void
     {
-        Schema::dropIfExists('producto_lotes');
+        Schema::dropIfExists('lote_productos');
     }
 };

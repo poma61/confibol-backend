@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class UsuarioRole extends Model
 {
     use HasFactory;
-    protected $table="usuarios_has_roles";
+    protected $table = "usuarios_has_roles";
 
-}//class
+    protected $hidden = [
+        'status',
+        'updated_at',
+        'created_at',
+    ];
+
+} //class

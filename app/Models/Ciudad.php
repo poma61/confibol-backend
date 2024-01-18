@@ -11,4 +11,10 @@ class Ciudad extends Model
 
     protected $table = 'ciudades';
 
+    protected $hidden = [
+        'updated_at',
+        'status',
+        'created_at',
+    ];
+    
 }//class

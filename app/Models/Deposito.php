@@ -17,8 +17,9 @@ class Deposito extends Model
     ];
 
     protected $hidden = [
-        'updated_at',
-        'status',
-    ];
+      'updated_at',
+      'status',
+      'created_at',
+  ];
     
 }//class

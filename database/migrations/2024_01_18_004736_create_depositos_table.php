@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
     public function up(): void
     {
         Schema::create('depositos', function (Blueprint $table) {
@@ -19,6 +20,7 @@ return new class extends Migration
             $table->foreign('id_ciudad')->references('id')->on('ciudades');
         });
     }
+
 
     public function down(): void
     {

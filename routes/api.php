@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CompraController;
 use App\Http\Controllers\Api\DepositoController;
 use App\Http\Controllers\Api\PersonalController;
 use App\Http\Controllers\Api\UsuarioController;
@@ -40,11 +41,10 @@ Route::prefix('/deposito')->middleware(['jwt'])->group(function () {
     Route::post('/delete-data', [DepositoController::class, 'destroy']);
 });
 
-Route::prefix('/compra')->middleware(['jwt'])->group(function () {
-    Route::post('/all-data', [DepositoController::class, 'indexCompra']);
-    Route::post('/all-data-compras-productos', [DepositoController::class, 'indexCompraProducto']);
-    Route::post('/new-data', [DepositoController::class, 'store']);
-    Route::put('/edit-data', [DepositoController::class, 'update']);
-    Route::post('/delete-data', [DepositoController::class, 'destroy']);
-});
 
+Route::prefix('/compra')->middleware(['jwt'])->group(function () {
+    Route::post('/all-data', [CompraController::class, 'index']);
+    Route::post('/new-data', [CompraController::class, 'store']);
+    Route::put('/edit-data', [CompraController::class, 'update']);
+    Route::post('/delete-data', [CompraController::class, 'destroy']);
+});

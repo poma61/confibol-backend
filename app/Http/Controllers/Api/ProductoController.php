@@ -46,4 +46,6 @@ class ProductoController extends Controller
     {
         //
     }
-}
+
+    
+}//class
