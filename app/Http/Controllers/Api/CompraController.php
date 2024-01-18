@@ -173,13 +173,12 @@ class CompraController extends Controller
 
     public function destroy(Request $request)
     {
-        try {
-
+        try {  
             $compra = Compra::where('status', true)
-                ->where('id', $request->input("id"))
+                ->where('id', $request->input("compra.id"))
                 ->first();
             $documento_compra = DocumentoCompra::where('status', true)
-                ->where('id_compra', $request->input("id"))
+                ->where('id_compra', $request->input("compra.id"))
                 ->first();
 
             //verificamos si el registro existe por estabilidad del sistema
