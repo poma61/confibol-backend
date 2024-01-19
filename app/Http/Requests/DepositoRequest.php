@@ -21,7 +21,7 @@ class DepositoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombres' => 'required',
+            'nombre_deposito' => 'required',
             'direccion' => 'required',
         ];
     }

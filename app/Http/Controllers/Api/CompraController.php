@@ -33,7 +33,7 @@ class CompraController extends Controller
                 ->select(
                     'documentos_compras.tipo_compra',
                     'documentos_compras.recibo',
-                    'documentos_compras.factura',
+                    'documentos_compras.factura_nacional',
                     'documentos_compras.lista_empaque',
                     'documentos_compras.poliza',
                     'documentos_compras.factura_importacion',
@@ -92,7 +92,7 @@ class CompraController extends Controller
                 ->select(
                     'documentos_compras.tipo_compra',
                     'documentos_compras.recibo',
-                    'documentos_compras.factura',
+                    'documentos_compras.factura_nacional',
                     'documentos_compras.lista_empaque',
                     'documentos_compras.poliza',
                     'documentos_compras.factura_importacion',
@@ -119,7 +119,6 @@ class CompraController extends Controller
     public function update(CompraByCompDocumentoRequest $request)
     {
         try {
-
             $request_compra = $request->input("compra");
             $compra = Compra::where('status', true)
                 ->where('id', $request_compra['id'])
@@ -138,8 +137,22 @@ class CompraController extends Controller
             }
 
             $compra->update($request_compra);
-            $documento_compra->update($request->input("documento_compra"));
 
+            //actualizamos los documentos compra
+            $documento_compra->fill($request->input("documento_compra"));
+            if ($request->input("documento_compra.tipo_compra") == "Nacional") {
+                //cuando el tipo de compra es nacional 
+                //los datos que corresponde a tipo de compra importacion deben ser null
+                $documento_compra->factura_importacion = null;
+                $documento_compra->lista_empaque = null;
+                $documento_compra->poliza = null;
+            } else {
+                //cuando el tipo de compra es importacion 
+                //los datos que corresponde a tipo de compra nacional deben ser null
+                $documento_compra->factura_nacional = null;
+                $documento_compra->recibo = null;
+            }
+            $documento_compra->update();
 
             $id_compra = $compra->id;
             $compra = Compra::join('ciudades', 'ciudades.id', '=', 'compras.id_ciudad')
@@ -147,7 +160,7 @@ class CompraController extends Controller
                 ->select(
                     'documentos_compras.tipo_compra',
                     'documentos_compras.recibo',
-                    'documentos_compras.factura',
+                    'documentos_compras.factura_nacional',
                     'documentos_compras.lista_empaque',
                     'documentos_compras.poliza',
                     'documentos_compras.factura_importacion',
@@ -173,7 +186,7 @@ class CompraController extends Controller
 
     public function destroy(Request $request)
     {
-        try {  
+        try {
             $compra = Compra::where('status', true)
                 ->where('id', $request->input("compra.id"))
                 ->first();

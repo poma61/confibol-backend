@@ -55,7 +55,7 @@ class DepositoController extends Controller
             $deposito = Deposito::join('ciudades', 'ciudades.id', '=', 'depositos.id_ciudad')
                 ->select(
                     'depositos.id',
-                    'depositos.nombres as deposito',
+                    'depositos.nombre_deposito as deposito',
                     'ciudades.nombres as ciudad',
                 )
                 ->where('depositos.status', true)

@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('depositos', function (Blueprint $table) {
             $table->id();
-            $table->string('nombres');
+            $table->string('nombre_deposito');
             $table->string('direccion');
             $table->foreignId('id_ciudad');
             $table->boolean('status');

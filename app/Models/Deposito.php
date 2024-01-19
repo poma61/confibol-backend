@@ -10,7 +10,7 @@ class Deposito extends Model
     use HasFactory;
 
     protected $fillable = [
-      'nombres',
+      'nombre_deposito',
       'direccion',
       'id_ciudad',
       'status',

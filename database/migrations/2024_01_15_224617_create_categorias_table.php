@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('categorias', function (Blueprint $table) {
             $table->engine = 'InnoDB ROW_FORMAT=DYNAMIC';
             $table->id();
-            $table->string('nombres');
+            $table->string('nombre_categoria');
             $table->foreignId('id_ciudad');
             $table->boolean('status');
             $table->timestamps();

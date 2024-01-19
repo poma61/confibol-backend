@@ -169,21 +169,22 @@ class DatabaseSeeder extends Seeder
 
         //datos de prueba
         Deposito::create([
-            'nombres' => 'Deposito 1',
+            'nombre_deposito' => 'Deposito 1',
             'direccion' => 'La Paz',
             'id_ciudad' => 1,
             'status' => true,
         ]);
         
         Categoria::create([
-            'nombres' => 'Pasteleria',
+            'nombre_categoria' => 'Pasteleria',
             'id_ciudad' => 1,
             'status' => true,
         ]);
 
         Producto::create([
-            'nombres' => 'Mermelada',
-            'imagen' => 'Caramelo',
+            'nombre_producto' => 'Mermelada',
+            'marca' => 'Nestle',
+            'imagen' => '/storage/img/personal/mermelada.jpeg',
             'id_categoria' => 1,
             'status' => true,
         ]);

@@ -19,8 +19,8 @@ class LoteProductoController extends Controller
                 ->join("depositos", "depositos.id", "=", "lote_productos.id_deposito")
                 ->select(
                     "lote_productos.*",
-                    "depositos.nombres as nombres_deposito",
-                    "productos.nombres as nombres_producto"
+                    "depositos.nombre_deposito",
+                    "productos.nombre_producto"
                 )
                 ->where('productos.status', true)
                 ->where('depositos.status', true)

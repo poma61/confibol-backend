@@ -20,12 +20,21 @@ class CompraByCompDocumentoRequest extends FormRequest
 
     public function rules(): array
     {
-        return   [
+        $rules = [
             //compra
             'compra.fecha_compra' => 'required|date',
             //compra documentos
             'documento_compra.tipo_compra' => 'required',
         ];
+
+        if ($this->input("documento_compra.tipo_compra") == 'Nacional') {
+            $rules["documento_compra.factura_nacional"] = "required";
+        } else {
+            //cuando es internacional
+            $rules["documento_compra.factura_importacion"] = "required";
+        }
+
+        return $rules;
     }
 
     public function messages(): array
@@ -35,6 +44,8 @@ class CompraByCompDocumentoRequest extends FormRequest
             'compra.fecha_compra.required' => 'El campo fecha compra es requerido.',
             'compra.fecha_compra.date' => 'El campo fecha compra no es una fecha válida.',
             'documento_compra.tipo_compra.required' => 'El campo tipo de compra es requerido.',
+            'documento_compra.factura_nacional.required' => 'El campo factura nacional es requerido.',
+            'documento_compra.factura_importacion.required' => 'El campo factura internacional es requerido.',
         ];
 
         return $messages;
@@ -48,4 +59,4 @@ class CompraByCompDocumentoRequest extends FormRequest
             'validation_errors' => $validator->errors(),
         ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
-}//class
+} //class

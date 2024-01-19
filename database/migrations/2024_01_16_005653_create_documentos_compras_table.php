@@ -14,7 +14,7 @@ return new class extends Migration
             $table->id();
             $table->string('tipo_compra', 100);
             $table->string('recibo')->nullable();
-            $table->string('factura')->nullable();
+            $table->string('factura_nacional')->nullable();
             $table->string('lista_empaque')->nullable();
             $table->string('poliza')->nullable();
             $table->string('factura_importacion')->nullable();
