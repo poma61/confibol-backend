@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 //add
-use App\Models\ProductoLote;
+use App\Models\LoteProducto;
 use Illuminate\Http\Request;
 use Throwable;
 use App\Http\Requests\LoteProductoRequest;
@@ -15,9 +15,17 @@ class LoteProductoController extends Controller
     public function index(Request $request)
     {
         try {
-
-            $producto_lote = ProductoLote::where('status', true)
-                ->where('id_compra', $request->input("id_compra"))
+            $producto_lote = LoteProducto::join("productos", "productos.id", "=", "lote_productos.id_producto")
+                ->join("depositos", "depositos.id", "=", "lote_productos.id_deposito")
+                ->select(
+                    "lote_productos.*",
+                    "depositos.nombres as nombres_deposito",
+                    "productos.nombres as nombres_producto"
+                )
+                ->where('productos.status', true)
+                ->where('depositos.status', true)
+                ->where('lote_productos.status', true)
+                ->where('lote_productos.id_compra', $request->input("id_compra"))
                 ->get();
 
             return response()->json([
@@ -37,9 +45,8 @@ class LoteProductoController extends Controller
     public function store(LoteProductoRequest $request)
     {
         try {
-
             //agregamos la producto_lote realizada
-            $producto_lote = new ProductoLote($request->all());
+            $producto_lote = new LoteProducto($request->all());
             $producto_lote->status = true;
             $producto_lote->save();
 
@@ -60,7 +67,7 @@ class LoteProductoController extends Controller
     public function update(LoteProductoRequest $request)
     {
         try {
-            $producto_lote = ProductoLote::where('status', true)
+            $producto_lote = LoteProducto::where('status', true)
                 ->where('id', $request->input('id'))
                 ->first();
 
@@ -92,7 +99,7 @@ class LoteProductoController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $producto_lote = ProductoLote::where('status', true)
+            $producto_lote = LoteProducto::where('status', true)
                 ->where('id', $request->input('id'))
                 ->first();
 

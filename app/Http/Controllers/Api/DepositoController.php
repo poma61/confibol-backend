@@ -49,6 +49,33 @@ class DepositoController extends Controller
         }
     }
 
+    public function list()
+    {
+        try {
+            $deposito = Deposito::join('ciudades', 'ciudades.id', '=', 'depositos.id_ciudad')
+                ->select(
+                    'depositos.id',
+                    'depositos.nombres as deposito',
+                    'ciudades.nombres as ciudad',
+                )
+                ->where('depositos.status', true)
+
+                ->get();
+
+            return response()->json([
+                'records' => $deposito,
+                'status' => true,
+                'message' => "OK",
+            ], 200);
+        } catch (Throwable $th) {
+            return response()->json([
+                'records' => null,
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
 
     public function store(DepositoRequest $request)
     {
@@ -144,4 +171,4 @@ class DepositoController extends Controller
             ], 500);
         }
     }
-}//class
+} //class
