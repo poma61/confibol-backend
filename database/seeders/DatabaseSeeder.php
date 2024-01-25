@@ -184,9 +184,11 @@ class DatabaseSeeder extends Seeder
         Producto::create([
             'nombre_producto' => 'Mermelada',
             'marca' => 'Nestle',
-            'imagen' => '/storage/img/personal/mermelada.jpeg',
+            'imagen' => '/storage/img/producto/mermelada.jpeg',
             'id_categoria' => 1,
             'status' => true,
         ]);
+
+        
     } //run
 }//class

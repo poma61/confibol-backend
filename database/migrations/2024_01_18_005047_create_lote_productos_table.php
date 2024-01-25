@@ -11,6 +11,9 @@ return new class extends Migration {
         Schema::create('lote_productos', function (Blueprint $table) {
             $table->engine = 'InnoDB ROW_FORMAT=DYNAMIC';
             $table->id();
+            //agregamos este campo porque al crear nuevos registro de forma masiva debemos saber que registro se insertaron de forma masiva,
+            //todos los registros que tengan el mismo valor en su campo uuid significa que estos mismos se insertaron de forma masiva
+            $table->string('uuid');
             $table->string('codigo');
             $table->string('fecha_vencimiento');
             $table->longText('descripcion')->nullable();

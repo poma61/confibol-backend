@@ -10,10 +10,14 @@ class LoteProducto extends Model
     use HasFactory;
 
     protected $fillable = [
-        "fecha_vecimiento",
-        "detalle",
-        "cantidad",
+        "uuid",
+        "codigo",
+        "fecha_vencimiento",
+        "descripcion",
         "costo_unitario",
+        "cantidad",
+        "peso_neto",
+        "unidad_medida_peso_neto",
         "id_producto",
         "id_compra",
         "id_deposito",
