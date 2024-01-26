@@ -59,4 +59,4 @@ class LoteProductoRequest extends FormRequest
             'validation_errors' => $validator->errors(),
         ], 422));
     }
-}
+}//class

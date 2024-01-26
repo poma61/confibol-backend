@@ -8,6 +8,7 @@ use App\Models\LoteProducto;
 use Illuminate\Http\Request;
 use Throwable;
 use App\Http\Requests\LoteProductoRequest;
+use App\Models\Compra;
 use App\Models\Deposito;
 use App\Models\DocumentoCompra;
 use App\Models\Producto;
@@ -27,6 +28,7 @@ class LoteProductoController extends Controller
                     "depositos.nombre_deposito",
                     "productos.nombre_producto",
                     "productos.marca",
+                    "productos.img_producto",
                     "ciudades.nombres as ciudad",
                 )
                 ->where('productos.status', true)
@@ -54,35 +56,45 @@ class LoteProductoController extends Controller
         try {
             $__lote_productos = $request->input("lote_productos");
 
-            //verificamos si deposito y producto no estan eliminados
+            //verificamos si deposito, producto y compra no estan eliminados
             //por estabilidad del sistemaa
+            //el metodo exists() devuelve true si al menos hay un registros 
             foreach ($__lote_productos as $values_lote_producto) {
                 $deposito = Deposito::where("status", true)
                     ->where("id", $values_lote_producto['id_deposito'])
-                    ->first();
-                if ($deposito == null) {
-
+                    ->exists();
+                if (!$deposito) {
                     return response()->json([
                         'records' => null,
                         'status' => false,
                         'message' => "El deposito con id {$values_lote_producto['id_deposito']} no se encuentra registrado en el sistema!",
                     ], 404);
-
                 }
 
                 $producto = Producto::where("status", true)
                     ->where("id", $values_lote_producto['id_producto'])
-                    ->first();
-                if ($producto == null) {
+                    ->exists();
+                if (!$producto) {
                     return response()->json([
                         'records' => null,
                         'status' => false,
                         'message' => "El producto con id {$values_lote_producto['id_producto']} no se encuentra registrado en el sistema!",
                     ], 404);
+                }
+
+                $compra = Compra::where("status", true)
+                    ->where("id", $values_lote_producto['id_compra'])
+                    ->exists();
+                if (!$compra) {
+                    return response()->json([
+                        'records' => null,
+                        'status' => false,
+                        'message' => "La compra con id {$values_lote_producto['id_compra']} no se encuentra registrado en el sistema!",
+                    ], 404);
 
                 }
-            }
 
+            } //foreach
 
             do {
                 $__uuid = Str::uuid();
@@ -111,6 +123,7 @@ class LoteProductoController extends Controller
                     "depositos.nombre_deposito",
                     "productos.nombre_producto",
                     "productos.marca",
+                    "productos.img_producto",
                     "ciudades.nombres as ciudad",
                 )
                 ->where('lote_productos.uuid', $__uuid)
@@ -139,6 +152,42 @@ class LoteProductoController extends Controller
                 $request_lote_producto = $values_lote_producto;
             }
 
+            //verificamos si deposito, producto y compra no estan eliminados
+            //por estabilidad del sistema
+            //el metodo exists() devuelve true si al menos hay un registros 
+            $deposito = Deposito::where("status", true)
+                ->where("id", $request_lote_producto['id_deposito'])
+                ->exists();
+            if (!$deposito) {
+                return response()->json([
+                    'records' => null,
+                    'status' => false,
+                    'message' => "El deposito con id {$request_lote_producto['id_deposito']} no se encuentra registrado en el sistema!",
+                ], 404);
+            }
+
+            $producto = Producto::where("status", true)
+                ->where("id", $request_lote_producto['id_producto'])
+                ->exists();
+            if (!$producto) {
+                return response()->json([
+                    'records' => null,
+                    'status' => false,
+                    'message' => "El producto con id {$request_lote_producto['id_producto']} no se encuentra registrado en el sistema!",
+                ], 404);
+            }
+
+            $compra = Compra::where("status", true)
+                ->where("id", $request_lote_producto['id_compra'])
+                ->exists();
+            if (!$compra) {
+                return response()->json([
+                    'records' => null,
+                    'status' => false,
+                    'message' => "La compra con id {$request_lote_producto['id_compra']} no se encuentra registrado en el sistema!",
+                ], 404);
+            }
+
             $lote_producto = LoteProducto::where('status', true)
                 ->where('id', $request_lote_producto['id'])
                 ->first();
@@ -163,6 +212,7 @@ class LoteProductoController extends Controller
                     "depositos.nombre_deposito",
                     "productos.nombre_producto",
                     "productos.marca",
+                    "productos.img_producto",
                     "ciudades.nombres as ciudad",
                 )
                 ->where('lote_productos.id', $id_lote_producto)

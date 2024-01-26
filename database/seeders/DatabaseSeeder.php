@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Categoria;
+
 use App\Models\Ciudad;
 use App\Models\Deposito;
-use App\Models\Grupo;
 use App\Models\Personal;
 use App\Models\Producto;
 use App\Models\Role;
@@ -28,109 +27,6 @@ class DatabaseSeeder extends Seeder
             ['nombres' => 'Pando'],
             ['nombres' => 'Tarija'],
             ['nombres' => 'Oruro'],
-        ]);
-
-        Grupo::insert([
-            //Santa-Cruz
-            ['number' => '01', 'id_ciudad' => 1, 'descripcion' => '01'],
-            ['number' => '02', 'id_ciudad' => 1, 'descripcion' => '02'],
-            ['number' => '03', 'id_ciudad' => 1, 'descripcion' => '03'],
-            ['number' => '04', 'id_ciudad' => 1, 'descripcion' => '04'],
-            ['number' => '05', 'id_ciudad' => 1, 'descripcion' => '05'],
-            ['number' => '06', 'id_ciudad' => 1, 'descripcion' => '06'],
-            ['number' => '07', 'id_ciudad' => 1, 'descripcion' => '07'],
-            ['number' => '08', 'id_ciudad' => 1, 'descripcion' => '08'],
-            ['number' => '09', 'id_ciudad' => 1, 'descripcion' => '09'],
-            ['number' => '10', 'id_ciudad' => 1, 'descripcion' => '10'],
-            //Chuquisaca
-            ['number' => '01', 'id_ciudad' => 2, 'descripcion' => '01'],
-            ['number' => '02', 'id_ciudad' => 2, 'descripcion' => '02'],
-            ['number' => '03', 'id_ciudad' => 2, 'descripcion' => '03'],
-            ['number' => '04', 'id_ciudad' => 2, 'descripcion' => '04'],
-            ['number' => '05', 'id_ciudad' => 2, 'descripcion' => '05'],
-            ['number' => '06', 'id_ciudad' => 2, 'descripcion' => '06'],
-            ['number' => '07', 'id_ciudad' => 2, 'descripcion' => '07'],
-            ['number' => '08', 'id_ciudad' => 2, 'descripcion' => '08'],
-            ['number' => '09', 'id_ciudad' => 2, 'descripcion' => '09'],
-            ['number' => '10', 'id_ciudad' => 2, 'descripcion' => '10'],
-            //Cochabamba
-            ['number' => '01', 'id_ciudad' => 3, 'descripcion' => '01'],
-            ['number' => '02', 'id_ciudad' => 3, 'descripcion' => '02'],
-            ['number' => '03', 'id_ciudad' => 3, 'descripcion' => '03'],
-            ['number' => '04', 'id_ciudad' => 3, 'descripcion' => '04'],
-            ['number' => '05', 'id_ciudad' => 3, 'descripcion' => '05'],
-            ['number' => '06', 'id_ciudad' => 3, 'descripcion' => '06'],
-            ['number' => '07', 'id_ciudad' => 3, 'descripcion' => '07'],
-            ['number' => '08', 'id_ciudad' => 3, 'descripcion' => '08'],
-            ['number' => '09', 'id_ciudad' => 3, 'descripcion' => '09'],
-            ['number' => '10', 'id_ciudad' => 3, 'descripcion' => '10'],
-            //Potosi
-            ['number' => '01', 'id_ciudad' => 4, 'descripcion' => '01'],
-            ['number' => '02', 'id_ciudad' => 4, 'descripcion' => '02'],
-            ['number' => '03', 'id_ciudad' => 4, 'descripcion' => '03'],
-            ['number' => '04', 'id_ciudad' => 4, 'descripcion' => '04'],
-            ['number' => '05', 'id_ciudad' => 4, 'descripcion' => '05'],
-            ['number' => '06', 'id_ciudad' => 4, 'descripcion' => '06'],
-            ['number' => '07', 'id_ciudad' => 4, 'descripcion' => '07'],
-            ['number' => '08', 'id_ciudad' => 4, 'descripcion' => '08'],
-            ['number' => '09', 'id_ciudad' => 4, 'descripcion' => '09'],
-            ['number' => '10', 'id_ciudad' => 4, 'descripcion' => '10'],
-            //Beni
-            ['number' => '01', 'id_ciudad' => 5, 'descripcion' => '01'],
-            ['number' => '02', 'id_ciudad' => 5, 'descripcion' => '02'],
-            ['number' => '03', 'id_ciudad' => 5, 'descripcion' => '03'],
-            ['number' => '04', 'id_ciudad' => 5, 'descripcion' => '04'],
-            ['number' => '05', 'id_ciudad' => 5, 'descripcion' => '05'],
-            ['number' => '06', 'id_ciudad' => 5, 'descripcion' => '06'],
-            ['number' => '07', 'id_ciudad' => 5, 'descripcion' => '07'],
-            ['number' => '08', 'id_ciudad' => 5, 'descripcion' => '08'],
-            ['number' => '09', 'id_ciudad' => 5, 'descripcion' => '09'],
-            ['number' => '10', 'id_ciudad' => 5, 'descripcion' => '10'],
-            //La-Paz
-            ['number' => '01', 'id_ciudad' => 6, 'descripcion' => '01'],
-            ['number' => '02', 'id_ciudad' => 6, 'descripcion' => '02'],
-            ['number' => '03', 'id_ciudad' => 6, 'descripcion' => '03'],
-            ['number' => '04', 'id_ciudad' => 6, 'descripcion' => '04'],
-            ['number' => '05', 'id_ciudad' => 6, 'descripcion' => '05'],
-            ['number' => '06', 'id_ciudad' => 6, 'descripcion' => '06'],
-            ['number' => '07', 'id_ciudad' => 6, 'descripcion' => '07'],
-            ['number' => '08', 'id_ciudad' => 6, 'descripcion' => '08'],
-            ['number' => '09', 'id_ciudad' => 6, 'descripcion' => '09'],
-            ['number' => '10', 'id_ciudad' => 6, 'descripcion' => '10'],
-            //Pando
-            ['number' => '01', 'id_ciudad' => 7, 'descripcion' => '01'],
-            ['number' => '02', 'id_ciudad' => 7, 'descripcion' => '02'],
-            ['number' => '03', 'id_ciudad' => 7, 'descripcion' => '03'],
-            ['number' => '04', 'id_ciudad' => 7, 'descripcion' => '04'],
-            ['number' => '05', 'id_ciudad' => 7, 'descripcion' => '05'],
-            ['number' => '06', 'id_ciudad' => 7, 'descripcion' => '06'],
-            ['number' => '07', 'id_ciudad' => 7, 'descripcion' => '07'],
-            ['number' => '08', 'id_ciudad' => 7, 'descripcion' => '08'],
-            ['number' => '09', 'id_ciudad' => 7, 'descripcion' => '09'],
-            ['number' => '10', 'id_ciudad' => 7, 'descripcion' => '10'],
-            //Tarija
-            ['number' => '01', 'id_ciudad' => 8, 'descripcion' => '01'],
-            ['number' => '02', 'id_ciudad' => 8, 'descripcion' => '02'],
-            ['number' => '03', 'id_ciudad' => 8, 'descripcion' => '03'],
-            ['number' => '04', 'id_ciudad' => 8, 'descripcion' => '04'],
-            ['number' => '05', 'id_ciudad' => 8, 'descripcion' => '05'],
-            ['number' => '06', 'id_ciudad' => 8, 'descripcion' => '06'],
-            ['number' => '07', 'id_ciudad' => 8, 'descripcion' => '07'],
-            ['number' => '08', 'id_ciudad' => 8, 'descripcion' => '08'],
-            ['number' => '09', 'id_ciudad' => 8, 'descripcion' => '09'],
-            ['number' => '10', 'id_ciudad' => 8, 'descripcion' => '10'],
-
-            //Oruro
-            ['number' => '01', 'id_ciudad' => 9, 'descripcion' => '01'],
-            ['number' => '02', 'id_ciudad' => 9, 'descripcion' => '02'],
-            ['number' => '03', 'id_ciudad' => 9, 'descripcion' => '03'],
-            ['number' => '04', 'id_ciudad' => 9, 'descripcion' => '04'],
-            ['number' => '05', 'id_ciudad' => 9, 'descripcion' => '05'],
-            ['number' => '06', 'id_ciudad' => 9, 'descripcion' => '06'],
-            ['number' => '07', 'id_ciudad' => 9, 'descripcion' => '07'],
-            ['number' => '08', 'id_ciudad' => 9, 'descripcion' => '08'],
-            ['number' => '09', 'id_ciudad' => 9, 'descripcion' => '09'],
-            ['number' => '10', 'id_ciudad' => 9, 'descripcion' => '10'],
         ]);
 
         Personal::create([
@@ -174,21 +70,16 @@ class DatabaseSeeder extends Seeder
             'id_ciudad' => 1,
             'status' => true,
         ]);
-        
-        Categoria::create([
-            'nombre_categoria' => 'Pasteleria',
-            'id_ciudad' => 1,
-            'status' => true,
-        ]);
 
-        Producto::create([
-            'nombre_producto' => 'Mermelada',
-            'marca' => 'Nestle',
-            'imagen' => '/storage/img/producto/mermelada.jpeg',
-            'id_categoria' => 1,
-            'status' => true,
-        ]);
-
-        
+        for ($i = 1; $i <=200; $i++) {
+            $__productos[] = [
+                'nombre_producto' => 'Mermelada '.$i,
+                'marca' => 'Nestle',
+                'img_producto' => '/storage/img/producto/mermelada.jpeg',
+                'categoria' => 'Pasteleria',
+                'status' => true,
+            ];
+        }
+        Producto::insert($__productos);
     } //run
-}//class
+} //class
