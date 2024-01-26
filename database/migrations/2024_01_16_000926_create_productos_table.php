@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->id();
             $table->string('nombre_producto');
             $table->string('marca');
-            $table->string('img_producto');
+            $table->string('image_path');
             $table->string('categoria');
             $table->boolean('status');
             $table->timestamps();

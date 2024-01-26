@@ -22,10 +22,23 @@ class ProductoRequest extends FormRequest
         return [
             'nombre_producto' => 'required',
             'marca' => 'required',
-            'img_producto' => ($this->isMethod('PUT')) ? 'sometimes|mimes:jpeg,jpg,png' : 'required|mimes:jpeg,jpg,png',
+            //este campo no se almacena enla base de datos es solo para recibir la imagen de tipo blob del lado del cliente
+            'image_file' => ($this->isMethod('PUT')) ? 'sometimes|mimes:jpeg,jpg,png' : 'required|mimes:jpeg,jpg,png',
             'categoria' => 'required',
         ];
     }
+
+
+    public function messages(): array
+    {
+        $messages = [
+            'image_file.required' => 'El campo imagen del producto es requerido.',
+            'image_file.mimes' => 'El campo imagen del producto debe ser un archivo de tipo: jpeg, jpg, png..',
+        ];
+
+        return $messages;
+    }
+
 
     protected function failedValidation(Validator $validator): HttpResponseException
     {

@@ -53,14 +53,12 @@ Route::prefix('/compra')->middleware(['jwt'])->group(function () {
 });
 
 Route::prefix('/producto')->middleware(['jwt'])->group(function () {
-    Route::post('/listar', [ProductoController::class, 'list']);
+    Route::post('/listar', [ProductoController::class, 'index']);
     Route::post('/all-data', [ProductoController::class, 'index']);
     Route::post('/new-data', [ProductoController::class, 'store']);
     Route::put('/edit-data', [ProductoController::class, 'update']);
     Route::post('/delete-data', [ProductoController::class, 'destroy']);
 });
-
-
 
 Route::prefix('/lote-producto')->middleware(['jwt'])->group(function () {
     Route::post('/all-data', [LoteProductoController::class, 'index']);

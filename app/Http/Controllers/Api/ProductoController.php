@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductoRequest;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class ProductoController extends Controller
@@ -15,7 +16,7 @@ class ProductoController extends Controller
     {
         try {
             $producto = Producto::where('status', true)
-            ->get();
+                ->get();
             return response()->json([
                 'records' => $producto,
                 'status' => true,
@@ -33,7 +34,9 @@ class ProductoController extends Controller
     public function store(ProductoRequest $request)
     {
         try {
-            $producto = new Producto($request->all());
+            $producto = new Producto($request->except(['image_file', 'image_path']));
+            $image_path = $request->file('image_file')->store('img/producto', 'public');
+            $producto->image_path = "/storage/{$image_path}";
             $producto->status = true;
             $producto->save();
 
@@ -55,7 +58,6 @@ class ProductoController extends Controller
     public function update(ProductoRequest $request)
     {
         try {
-
             $producto = Producto::where('status', true)
                 ->where('id', $request->input('id'))
                 ->first();
@@ -68,7 +70,15 @@ class ProductoController extends Controller
                 ], 404);
             }
 
-            $producto->update($request->all());
+            $producto->fill($request->except(['image_file', 'image_path']));
+            //verificar si subio una nueva imagen
+            if ($request->file('image_file') != null) {
+                //eliminamos antigua foto 
+                Storage::disk('public')->delete(str_replace("/storage", "", $producto->image_path));
+                $image_path = $request->file('image_file')->store('img/producto', 'public');
+                $producto->image_path = "/storage/{$image_path}";
+            }
+            $producto->update();
 
             return response()->json([
                 'record' => $producto,

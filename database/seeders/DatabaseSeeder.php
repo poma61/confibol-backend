@@ -75,7 +75,7 @@ class DatabaseSeeder extends Seeder
             $__productos[] = [
                 'nombre_producto' => 'Mermelada '.$i,
                 'marca' => 'Nestle',
-                'img_producto' => '/storage/img/producto/mermelada.jpeg',
+                'image_path' => '/storage/img/producto/mermelada.jpeg',
                 'categoria' => 'Pasteleria',
                 'status' => true,
             ];
