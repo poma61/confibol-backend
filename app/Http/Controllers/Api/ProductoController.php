@@ -31,6 +31,28 @@ class ProductoController extends Controller
         }
     }
 
+    public function list()
+    {
+        try {
+            $producto = Producto::where('status', true)
+                ->orderBy('id','desc')
+                ->get();
+            return response()->json([
+                'records' => $producto,
+                'status' => true,
+                'message' => "OK",
+            ], 200);
+        } catch (Throwable $th) {
+            return response()->json([
+                'records' => null,
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+
+
     public function store(ProductoRequest $request)
     {
         try {

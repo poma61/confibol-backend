@@ -51,7 +51,6 @@ class Usuario extends Authenticatable implements JWTSubject
                 'usuarios.user',
                 'roles.rol_name',
                 'personals.*',
-                'ciudades.nombres as ciudad'
             ) //no es necesario verificar el status porque en toda peticion en el middleware JwtAuthenticate verifica el status de los datos
             ->where('usuarios.id', Auth::user()->id)
             ->first();

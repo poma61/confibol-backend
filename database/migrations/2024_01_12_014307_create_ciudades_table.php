@@ -12,8 +12,7 @@ return new class extends Migration
         Schema::create('ciudades', function (Blueprint $table) {
             $table->engine = 'InnoDB ROW_FORMAT=DYNAMIC';
             $table->id();
-            $table->string('nombres');
-            $table->timestamps();
+            $table->string('nombre_ciudad');
         });
     }
 

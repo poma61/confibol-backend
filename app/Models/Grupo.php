@@ -9,10 +9,16 @@ class Grupo extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'nombre_grupo',
+        'descripcion',
+        'id_ciudad',
+    ];
+
     protected $hidden = [
         'updated_at',
         'status',
         'created_at',
     ];
-    
-}
+
+} //class

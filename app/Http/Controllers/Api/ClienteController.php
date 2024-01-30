@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-//add
-use App\Http\Requests\DepositoRequest;
-use App\Models\Ciudad;
-use App\Models\Deposito;
+use App\Http\Requests\ClienteRequest;
 use Illuminate\Http\Request;
+//add
+use App\Models\Ciudad;
+use App\Models\Cliente;
+use App\Models\Grupo;
 use Throwable;
 
-class DepositoController extends Controller
+class ClienteController extends Controller
 {
-
     public function index(Request $request)
     {
         try {
@@ -23,20 +23,22 @@ class DepositoController extends Controller
             if ($ciudad == null) {
                 return response()->json([
                     'status' => false,
-                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}",
+                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}!",
                 ], 404);
             }
 
-            $deposito = Deposito::join('ciudades', 'ciudades.id', '=', 'depositos.id_ciudad')
+            $cliente = Cliente::join('grupos', 'grupos.id', '=', 'clientes.id_grupo')
+                ->join('ciudades', 'ciudades.id', '=', 'grupos.id_ciudad')
                 ->select(
-                    'depositos.*',
+                    'clientes.*',
                 )
-                ->where('depositos.status', true)
+                ->where('clientes.status', true)
+                ->where('grupos.status', true)
                 ->where('ciudades.id', $ciudad->id)
                 ->get();
 
             return response()->json([
-                'records' => $deposito,
+                'records' => $cliente,
                 'status' => true,
                 'message' => "OK",
             ], 200);
@@ -49,55 +51,29 @@ class DepositoController extends Controller
         }
     }
 
-    public function list()
-    {
-        try {
-            $deposito = Deposito::join('ciudades', 'ciudades.id', '=', 'depositos.id_ciudad')
-                ->select(
-                    'depositos.id',
-                    'depositos.nombre_deposito as deposito',
-                    'ciudades.nombre_ciudad as ciudad',
-                )
-                ->where('depositos.status', true)
-                ->orderBy('depositos.id', 'desc')
-                ->get();
-
-            return response()->json([
-                'records' => $deposito,
-                'status' => true,
-                'message' => "OK",
-            ], 200);
-        } catch (Throwable $th) {
-            return response()->json([
-                'records' => null,
-                'status' => false,
-                'message' => $th->getMessage(),
-            ], 500);
-        }
-    }
-
-
-    public function store(DepositoRequest $request)
+    public function store(ClienteRequest $request)
     {
         try {
             $ciudad = Ciudad::where('nombre_ciudad', $request->input('ciudad'))
-                ->first();
+                ->exists();
 
-            //debemos verificar si la ciudad existe en la base de datos por seguridad y estabilidad del sistema
-            if ($ciudad == null) {
+            $grupo = Grupo::where('status', true)
+                ->where('id', $request->input('id_grupo'))
+                ->exists();
+            //debemos verificar si la ciudad y grupo existe en la base de datos por seguridad y estabilidad del sistema
+            if (!$ciudad || !$grupo) {
                 return response()->json([
                     'status' => false,
-                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}",
+                    'message' => "No se encontro la ciudad de {$request->input('ciudad')} y/o no existe el grupo con id {$request->input('id_grupo')}!",
                 ], 404);
             }
 
-            $deposito = new Deposito($request->all());
-            $deposito->status = true;
-            $deposito->id_ciudad = $ciudad->id;
-            $deposito->save();
+            $cliente = new Cliente($request->all());
+            $cliente->status = true;
+            $cliente->save();
 
             return response()->json([
-                'record' => $deposito,
+                'record' => $cliente,
                 'status' => true,
                 'message' => "Registro guardado!",
             ], 200);
@@ -110,28 +86,27 @@ class DepositoController extends Controller
         }
     }
 
-
-    public function update(DepositoRequest $request)
+    public function update(ClienteRequest $request)
     {
         try {
-
             $ciudad = Ciudad::where('nombre_ciudad', $request->input('ciudad'))
                 ->exists();
 
-            //debemos verificar si la ciudad existe en la base de datos por seguridad y estabilidad del sistema
-            //al actualizar el registro no necesitamos el id_ciudad pero como es un "update" por ende en la base de datos se verificara si
-            //dicho registro existe y si no existe el registro nos dara un error, entonces para evitar esos errores verificamos si la ciudad existe 
-            if (!$ciudad) {
+            $grupo = Grupo::where('status', true)
+                ->where('id', $request->input('id_grupo'))
+                ->exists();
+            //debemos verificar si la ciudad y grupo existe en la base de datos por seguridad y estabilidad del sistema
+            if (!$ciudad || !$grupo) {
                 return response()->json([
                     'status' => false,
-                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}",
+                    'message' => "No se encontro la ciudad de {$request->input('ciudad')} y/o no existe el grupo con id {$request->input('id_grupo')}!",
                 ], 404);
             }
 
-            $deposito = Deposito::where('status', true)
+            $cliente = Cliente::where('status', true)
                 ->where('id', $request->input('id'))
                 ->first();
-            if ($deposito == null) {
+            if ($cliente == null) {
                 return response()->json([
                     'record' => null,
                     'status' => false,
@@ -139,10 +114,10 @@ class DepositoController extends Controller
                 ], 404);
             }
 
-            $deposito->update($request->all());
+            $cliente->update($request->all());
 
             return response()->json([
-                'record' => $deposito,
+                'record' => $cliente,
                 'status' => true,
                 'message' => "Registro actualizado!",
             ], 200);
@@ -155,22 +130,21 @@ class DepositoController extends Controller
         }
     }
 
-
     public function destroy(Request $request)
     {
         try {
-            $deposito = Deposito::where('status', true)
+            $cliente = Cliente::where('status', true)
                 ->where('id', $request->input('id'))
                 ->first();
-            if ($deposito == null) {
+            if ($cliente == null) {
                 return response()->json([
                     'status' => false,
                     'message' => "Este registro no se encuentra en el sistema!",
                 ], 404);
             }
 
-            $deposito->status = false;
-            $deposito->update();
+            $cliente->status = false;
+            $cliente->update();
 
             return response()->json([
                 'status' => true,
@@ -182,5 +156,5 @@ class DepositoController extends Controller
                 'message' => $th->getMessage(),
             ], 500);
         }
-    }//destroy
+    }
 } //class

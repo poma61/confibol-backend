@@ -18,15 +18,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         Ciudad::insert([
-            ['nombres' => 'La-Paz'],
-            ['nombres' => 'Santa-Cruz'],
-            ['nombres' => 'Chuquisaca'],
-            ['nombres' => 'Cochabamba'],
-            ['nombres' => 'Potosi'],
-            ['nombres' => 'Beni'],
-            ['nombres' => 'Pando'],
-            ['nombres' => 'Tarija'],
-            ['nombres' => 'Oruro'],
+            ['nombre_ciudad' => 'La-Paz'],
+            ['nombre_ciudad' => 'Santa-Cruz'],
+            ['nombre_ciudad' => 'Chuquisaca'],
+            ['nombre_ciudad' => 'Cochabamba'],
+            ['nombre_ciudad' => 'Potosi'],
+            ['nombre_ciudad' => 'Beni'],
+            ['nombre_ciudad' => 'Pando'],
+            ['nombre_ciudad' => 'Tarija'],
+            ['nombre_ciudad' => 'Oruro'],
         ]);
 
         Personal::create([

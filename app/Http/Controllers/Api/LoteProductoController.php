@@ -28,8 +28,8 @@ class LoteProductoController extends Controller
                     "depositos.nombre_deposito",
                     "productos.nombre_producto",
                     "productos.marca",
-                    "productos.img_producto",
-                    "ciudades.nombres as ciudad",
+                    "productos.image_path",
+                    "ciudades.nombre_ciudad as ciudad",
                 )
                 ->where('productos.status', true)
                 ->where('depositos.status', true)
@@ -123,8 +123,8 @@ class LoteProductoController extends Controller
                     "depositos.nombre_deposito",
                     "productos.nombre_producto",
                     "productos.marca",
-                    "productos.img_producto",
-                    "ciudades.nombres as ciudad",
+                    "productos.image_path",
+                    "ciudades.nombre_ciudad as ciudad",
                 )
                 ->where('lote_productos.uuid', $__uuid)
                 ->get();
@@ -141,7 +141,7 @@ class LoteProductoController extends Controller
                 'message' => $th->getMessage(),
             ], 500);
         }
-    }
+    } //store
 
     public function update(LoteProductoRequest $request): JsonResponse
     {
@@ -152,7 +152,8 @@ class LoteProductoController extends Controller
                 $request_lote_producto = $values_lote_producto;
             }
 
-            //verificamos si deposito, producto y compra no estan eliminados
+            //verificamos si deposito, producto y compra no estan eliminados (status=false) o  si existe en la base de datos
+            // (si un registro no existe en la base de datos entonces nos dara error por el foreign key)
             //por estabilidad del sistema
             //el metodo exists() devuelve true si al menos hay un registros 
             $deposito = Deposito::where("status", true)
@@ -201,7 +202,9 @@ class LoteProductoController extends Controller
                 ], 404);
             }
 
-            $lote_producto->update($request_lote_producto);
+            $lote_producto->fill($request_lote_producto);
+            $lote_producto->codigo = $this->generateCodigo($request_lote_producto['id_producto'], $request_lote_producto['id_compra']);
+            $lote_producto->update();
 
             $id_lote_producto = $lote_producto->id;
             $lote_producto = LoteProducto::join("productos", "productos.id", "=", "lote_productos.id_producto")
@@ -212,8 +215,8 @@ class LoteProductoController extends Controller
                     "depositos.nombre_deposito",
                     "productos.nombre_producto",
                     "productos.marca",
-                    "productos.img_producto",
-                    "ciudades.nombres as ciudad",
+                    "productos.image_path",
+                    "ciudades.nombre_ciudad as ciudad",
                 )
                 ->where('lote_productos.id', $id_lote_producto)
                 ->first();
@@ -230,7 +233,7 @@ class LoteProductoController extends Controller
                 'message' => $th->getMessage(),
             ], 500);
         }
-    }
+    } //update
 
     public function destroy(Request $request): JsonResponse
     {

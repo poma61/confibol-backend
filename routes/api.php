@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CompraController;
 use App\Http\Controllers\Api\DepositoController;
+use App\Http\Controllers\Api\GrupoController;
 use App\Http\Controllers\Api\LoteProductoController;
 use App\Http\Controllers\Api\PersonalController;
 use App\Http\Controllers\Api\ProductoController;
@@ -53,7 +54,7 @@ Route::prefix('/compra')->middleware(['jwt'])->group(function () {
 });
 
 Route::prefix('/producto')->middleware(['jwt'])->group(function () {
-    Route::post('/listar', [ProductoController::class, 'index']);
+    Route::post('/listar', [ProductoController::class, 'list']);
     Route::post('/all-data', [ProductoController::class, 'index']);
     Route::post('/new-data', [ProductoController::class, 'store']);
     Route::put('/edit-data', [ProductoController::class, 'update']);
@@ -66,3 +67,13 @@ Route::prefix('/lote-producto')->middleware(['jwt'])->group(function () {
     Route::put('/edit-data', [LoteProductoController::class, 'update']);
     Route::post('/delete-data', [LoteProductoController::class, 'destroy']);
 });
+
+
+Route::prefix('/grupo')->middleware(['jwt'])->group(function () {
+    Route::post('/listar', [GrupoController::class, 'list']);
+    Route::post('/all-data', [GrupoController::class, 'index']);
+    Route::post('/new-data', [GrupoController::class, 'store']);
+    Route::put('/edit-data', [GrupoController::class, 'update']);
+    Route::post('/delete-data', [GrupoController::class, 'destroy']);
+});
+

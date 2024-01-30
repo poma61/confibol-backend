@@ -16,7 +16,7 @@ class CompraController extends Controller
     public function index(Request $request)
     {
         try {
-            $ciudad = Ciudad::where('nombres', $request->input('ciudad'))
+            $ciudad = Ciudad::where('nombre_ciudad', $request->input('ciudad'))
                 ->first();
 
             //debemos verificar si la ciudad existe en la base de datos por seguridad y estabilidad del sistema
@@ -63,7 +63,7 @@ class CompraController extends Controller
     public function store(CompraByCompDocumentoRequest $request)
     {
         try {
-            $ciudad = Ciudad::where('nombres', $request->input('ciudad'))
+            $ciudad = Ciudad::where('nombre_ciudad', $request->input('ciudad'))
                 ->first();
 
             //debemos verificar si la ciudad existe en la base de datos por seguridad y estabilidad del sistema
@@ -119,6 +119,17 @@ class CompraController extends Controller
     public function update(CompraByCompDocumentoRequest $request)
     {
         try {
+            $ciudad = Ciudad::where('nombre_ciudad', $request->input('ciudad'))
+                ->exists();
+
+            //debemos verificar si la ciudad existe en la base de datos por seguridad y estabilidad del sistema
+            if (!$ciudad) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}!",
+                ], 404);
+            }
+
             $request_compra = $request->input("compra");
             $compra = Compra::where('status', true)
                 ->where('id', $request_compra['id'])
@@ -135,7 +146,6 @@ class CompraController extends Controller
                     'message' => "Este registro no se encuentra en el sistema!",
                 ], 404);
             }
-
             $compra->update($request_compra);
 
             //actualizamos los documentos compra
