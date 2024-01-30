@@ -58,14 +58,14 @@ class GrupoController extends Controller
             if ($ciudad == null) {
                 return response()->json([
                     'status' => false,
-                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}",
+                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}!",
                 ], 404);
             }
 
             $grupo = Grupo::join('ciudades', 'ciudades.id', '=', 'grupos.id_ciudad')
                 ->select(
                     'grupos.id',
-                    'grupos.number as grupo',
+                    'grupos.nombre_grupo',
                 )
                 ->where('grupos.status', true)
                 ->where('ciudades.id', $ciudad->id)
@@ -86,7 +86,6 @@ class GrupoController extends Controller
         }
     }
 
-
     public function store(GrupoRequest $request)
     {
         try {
@@ -97,7 +96,7 @@ class GrupoController extends Controller
             if ($ciudad == null) {
                 return response()->json([
                     'status' => false,
-                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}",
+                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}!",
                 ], 404);
             }
 
@@ -128,12 +127,10 @@ class GrupoController extends Controller
                 ->exists();
 
             //debemos verificar si la ciudad existe en la base de datos por seguridad y estabilidad del sistema
-            //al actualizar el registro no necesitamos el id_ciudad pero como es un "update" por ende en la base de datos se verificara si
-            //dicho registro existe y si no existe el registro nos dara un error, entonces para evitar esos errores verificamos si la ciudad existe 
             if (!$ciudad) {
                 return response()->json([
                     'status' => false,
-                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}",
+                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}!",
                 ], 404);
             }
 

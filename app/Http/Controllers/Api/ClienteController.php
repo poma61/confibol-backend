@@ -61,6 +61,9 @@ class ClienteController extends Controller
                 ->where('id', $request->input('id_grupo'))
                 ->exists();
             //debemos verificar si la ciudad y grupo existe en la base de datos por seguridad y estabilidad del sistema
+            //si NO verificamos la ciudad no afecta en nada al registrar el registro, pero igual lo hacemos por buenas practicas de programacion
+            //si NO verificamos el grupo SI afecta al crear el registro, porque desde el frontend viene en el $request  el "id_grupo" y este es un campo
+            //para crear un registro nuevo. Por lo tanto se debe verificar si existe o no el grupo en cuestion.
             if (!$ciudad || !$grupo) {
                 return response()->json([
                     'status' => false,
@@ -96,6 +99,9 @@ class ClienteController extends Controller
                 ->where('id', $request->input('id_grupo'))
                 ->exists();
             //debemos verificar si la ciudad y grupo existe en la base de datos por seguridad y estabilidad del sistema
+            //si NO verificamos la ciudad no afecta en nada al registrar el registro, pero igual lo hacemos por buenas practicas de programacion
+            //si NO verificamos el grupo SI afecta al crear el registro, porque desde el frontend viene en el $request  el "id_grupo" y este es un campo
+            //para modificar un registro. Por lo tanto se debe verificar si existe o no el grupo en cuestion.
             if (!$ciudad || !$grupo) {
                 return response()->json([
                     'status' => false,

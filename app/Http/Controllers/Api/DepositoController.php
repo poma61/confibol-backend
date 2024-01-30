@@ -23,7 +23,7 @@ class DepositoController extends Controller
             if ($ciudad == null) {
                 return response()->json([
                     'status' => false,
-                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}",
+                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}!",
                 ], 404);
             }
 
@@ -87,7 +87,7 @@ class DepositoController extends Controller
             if ($ciudad == null) {
                 return response()->json([
                     'status' => false,
-                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}",
+                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}!",
                 ], 404);
             }
 
@@ -124,7 +124,7 @@ class DepositoController extends Controller
             if (!$ciudad) {
                 return response()->json([
                     'status' => false,
-                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}",
+                    'message' => "No se encontro la ciudad de {$request->input('ciudad')}!",
                 ], 404);
             }
 

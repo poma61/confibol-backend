@@ -20,6 +20,19 @@ class LoteProductoController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
+            $compra = Compra::where("id", $request->input('id_compra'))
+                ->where('status', true)
+                ->first();
+            //verificamos si la compra existe por seguridad y estabilidad del sistema
+            if ($compra == null) {
+                return response()->json([
+                    'records' => null,
+                    'status' => false,
+                    'message' => "La compra con id {$request->input('id_compra')} no se encuentra registrado en el sistema!",
+                ], 404);
+            }
+
+
             $producto_lote = LoteProducto::join("productos", "productos.id", "=", "lote_productos.id_producto")
                 ->join("depositos", "depositos.id", "=", "lote_productos.id_deposito")
                 ->join("ciudades", "ciudades.id", "=", "depositos.id_ciudad")
@@ -34,7 +47,7 @@ class LoteProductoController extends Controller
                 ->where('productos.status', true)
                 ->where('depositos.status', true)
                 ->where('lote_productos.status', true)
-                ->where('lote_productos.id_compra', $request->input("id_compra"))
+                ->where('lote_productos.id_compra', $compra->id)
                 ->get();
 
             return response()->json([
