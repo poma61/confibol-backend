@@ -31,6 +31,7 @@ class ClienteController extends Controller
                 ->join('ciudades', 'ciudades.id', '=', 'grupos.id_ciudad')
                 ->select(
                     'clientes.*',
+                    'grupos.nombre_grupo'
                 )
                 ->where('clientes.status', true)
                 ->where('grupos.status', true)
@@ -74,6 +75,16 @@ class ClienteController extends Controller
             $cliente = new Cliente($request->all());
             $cliente->status = true;
             $cliente->save();
+
+            $id_cliente = $cliente->id;
+            $cliente = Cliente::join('grupos', 'grupos.id', '=', 'clientes.id_grupo')
+                ->join('ciudades', 'ciudades.id', '=', 'grupos.id_ciudad')
+                ->select(
+                    'clientes.*',
+                    'grupos.nombre_grupo'
+                )
+                ->where('clientes.id', $id_cliente)
+                ->first();
 
             return response()->json([
                 'record' => $cliente,
@@ -121,6 +132,17 @@ class ClienteController extends Controller
             }
 
             $cliente->update($request->all());
+
+
+            $id_cliente = $cliente->id;
+            $cliente = Cliente::join('grupos', 'grupos.id', '=', 'clientes.id_grupo')
+                ->join('ciudades', 'ciudades.id', '=', 'grupos.id_ciudad')
+                ->select(
+                    'clientes.*',
+                    'grupos.nombre_grupo'
+                )
+                ->where('clientes.id', $id_cliente)
+                ->first();
 
             return response()->json([
                 'record' => $cliente,

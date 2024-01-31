@@ -35,7 +35,7 @@ class ClienteRequest extends FormRequest
             ],
             'ci_expedido' => 'required',
             'direccion' => 'required',
-            'id_grupo' => 'required',
+            'id_grupo' => 'required|numeric',
         ];
 
         //empty => devuelve false cuando la variable NO esta vacia y/o null o cuando SI tiene contenido
@@ -52,6 +52,15 @@ class ClienteRequest extends FormRequest
 
         return $rules;
     }
+
+    public function messages(): array
+    {
+        return  [
+            'id_grupo.required' => 'El campo grupo es requerido.',
+        ];
+
+    }
+
 
     protected function failedValidation(Validator $validator): HttpResponseException
     {
