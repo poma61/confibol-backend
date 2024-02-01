@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
             'n_de_contacto' => 1234567,
             'direccion' => 'La Paz - Bolivia',
             'status' => true,
-            'foto' => '/storage/img/personal/user.png',
+            'foto_image_path' => '/storage/img/personal/user.png',
             'id_ciudad' => 1,
         ]);
 

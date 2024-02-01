@@ -28,7 +28,6 @@ class ProductoRequest extends FormRequest
         ];
     }
 
-
     public function messages(): array
     {
         $messages = [
@@ -38,7 +37,6 @@ class ProductoRequest extends FormRequest
 
         return $messages;
     }
-
 
     protected function failedValidation(Validator $validator): HttpResponseException
     {

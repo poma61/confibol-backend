@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('cargo', 250);
             $table->string('ci', 100);
             $table->string('ci_expedido', 10);
-            $table->string('n_de_contacto', 100)->nullable();
+            $table->string('n_de_contacto', 100);
             $table->string('correo_electronico', 100)->nullable();
-            $table->text('direccion')->nullable();
-            $table->string('foto');
+            $table->text('direccion');
+            $table->string('foto_image_path');
             $table->boolean('status');
             $table->foreignId('id_ciudad');
             $table->timestamps();

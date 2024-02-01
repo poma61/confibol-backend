@@ -9,6 +9,21 @@ class Personal extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'nombres',
+        'apellido_paterno',
+        'apellido_materno',
+        'cargo',
+        'ci',
+        'ci_expedido',
+        'n_de_contacto',
+        'correo_electronico',
+        'direccion',
+        'foto_image_path',
+        'status',
+        'id_desarrolladora',
+    ];
+    
     protected $hidden = [
         'updated_at',
         'status',

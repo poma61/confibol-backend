@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\LoteProductoController;
 use App\Http\Controllers\Api\PersonalController;
 use App\Http\Controllers\Api\ProductoController;
 use App\Http\Controllers\Api\UsuarioController;
+use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/auth/login', [AuthController::class, 'login']);
@@ -28,7 +29,11 @@ Route::prefix('/personal')->middleware(['jwt'])->group(function () {
     Route::post('/new-data', [PersonalController::class, 'store']);
     Route::put('/edit-data', [PersonalController::class, 'update']);
     Route::post('/delete-data', [PersonalController::class, 'destroy']);
-    Route::post('/by-ci-personal', [PersonalController::class, 'recordByCi']);
+    Route::post('/buscar-personal-por-ci', [PersonalController::class, 'recordByCi']);
+});
+
+Route::prefix('/roles')->middleware(['jwt'])->group(function () {
+    Route::post('/listar', [Role::class, 'list']);
 });
 
 Route::prefix('/usuario')->middleware(['jwt'])->group(function () {
@@ -85,4 +90,5 @@ Route::prefix('/cliente')->middleware(['jwt'])->group(function () {
     Route::put('/edit-data', [ClienteController::class, 'update']);
     Route::post('/delete-data', [ClienteController::class, 'destroy']);
 });
+
 

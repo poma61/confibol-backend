@@ -26,8 +26,6 @@ class Usuario extends Authenticatable implements JWTSubject
         'created_at',
     ];
 
-
-
     public function getJWTIdentifier(): mixed
     {
         return $this->getKey();
