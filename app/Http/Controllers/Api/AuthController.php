@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 //add
 use App\Http\Requests\AuthProfileRequest;
@@ -15,18 +16,34 @@ use Throwable;
 class AuthController extends Controller
 {
 
-    public function  login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         try {
             $credentials = ['user' => $request->input('user'), 'password' => $request->input('password'), 'status' => true];
             if (!$token = Auth::attempt($credentials)) {
                 return response()->json([
-                    'access_token' => null,
+                    "session_auth" => [
+                        "access_token" => null,
+                        "token_type" => null,
+                        "time_expiration_token" => null,
+                        "role" => null,
+                    ],
                     'message' => 'Usuario y/o contraseña incorrectos.',
-                    'status' => false,
+                    "false" => false,
                 ], 200);
             }
-            return $this->respondWithToken($token);
+
+            return response()->json([
+                "session_auth" => [
+                    "access_token" => $token,
+                    "type_token" => "Bearer",
+                    "time_expiration_token" => Auth::factory()->getTTL(),
+                    "role" => $this->role(),
+                ],
+                "message" => "Sesion iniciada.",
+                "status" => true,
+            ]);
+
         } catch (Throwable $th) {
             return response()->json([
                 'access_token' => null,
@@ -36,18 +53,7 @@ class AuthController extends Controller
         }
     }
 
-    public function respondWithToken($token)
-    {
-        return response()->json([
-            "access_token" => $token,
-            "token_type" => "Bearer",
-            "message" => "Sesion iniciada.",
-            "expires_in" => Auth::factory()->getTTL(),
-            "status" => true,
-        ]);
-    }
-
-    public function logout()
+    public function logout(): JsonResponse
     {
         try {
             Auth::logout();
@@ -63,7 +69,7 @@ class AuthController extends Controller
             ], 500);
         }
     }
-    public function me()
+    public function me(): JsonResponse
     {
         try {
             return response()->json([
@@ -80,7 +86,7 @@ class AuthController extends Controller
         }
     }
 
-    public function updateCredentials(AuthProfileRequest $request)
+    public function updateCredentials(AuthProfileRequest $request): JsonResponse
     {
         try {
             $user = Usuario::where('id', Auth::user()->id)
@@ -112,21 +118,8 @@ class AuthController extends Controller
         }
     }
 
-    public function isRole()
+    public function role(): string
     {
-        try {
-            $user = Auth::user()->isPersonal();
-            return response()->json([
-                'record' => ['role' => $user->rol_name, 'desarrolladora' => $user->desarrolladora],
-                'message' => 'OK',
-                'status' => true,
-            ], 200);
-        } catch (Throwable $th) {
-            return response()->json([
-                'role' => null,
-                'message' => $th->getMessage(),
-                'status' => false,
-            ], 500);
-        }
+        return Auth::user()->isPersonal()->rol_name;
     }
-}//class
+} //class

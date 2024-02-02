@@ -8,7 +8,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 
-class UsuarioByRoleRequest extends FormRequest
+class UsuarioByUsuHasRoleRequest extends FormRequest
 {
 
     public function authorize(): bool
@@ -23,9 +23,9 @@ class UsuarioByRoleRequest extends FormRequest
             //aqui no hacemos el unique segun el status.. ya que son datos para iniciar sesion y en la base de datos user esta como unique
             //estos datos son sensibles por eso colocamos unique de forma segura sin depender del status del rgistro
             'user' => 'required|unique:usuarios,user,' . $this->input('id'),
-            'rol_name' => 'required',
-            //usuario_has_role
             'id_personal' => 'required',
+            //usuario_has_role
+            'id_role' => 'required',
         ];
 
         //si se esta editando el registro.. entonces el password ya no es obligatorio
@@ -41,14 +41,16 @@ class UsuarioByRoleRequest extends FormRequest
 
         return $rules;
     }
-
     public function messages(): array
     {
         return [
+            //usuario
             'id_personal.required' => 'El campo personal es requerido.',
-            'rol_name.required' => 'El campo rol es requerido.',
+            'user.required' => 'El campo usuario es requerido.',
             'password.required' => 'El campo contraseña es requerido.',
             'password.min' => 'El campo contraseña debe tener al menos 8 caracteres.',
+            //usuarios_has_roles
+            'id_role.required' => 'El campo rol es requerido.',
         ];
     }
 

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 //add
-use App\Http\Requests\UsuarioByRoleRequest;
+use App\Http\Requests\UsuarioByUsuHasRoleRequest;
 use App\Models\Role;
 use App\Models\Ciudad;
 use App\Models\Usuario;
@@ -37,6 +37,7 @@ class UsuarioController extends Controller
                 ->select(
                     'usuarios.*',
                     'roles.rol_name',
+                    'usuarios_has_roles.id_role',
                     'personals.nombres',
                     'personals.apellido_paterno',
                     'personals.apellido_materno',
@@ -63,7 +64,7 @@ class UsuarioController extends Controller
         }
     }
 
-    public function store(UsuarioByRoleRequest $request)
+    public function store(UsuarioByUsuHasRoleRequest $request)
     {
         try {
             $ciudad = Ciudad::where('nombre_ciudad', $request->input('ciudad'))
@@ -107,6 +108,7 @@ class UsuarioController extends Controller
                 ->select(
                     'usuarios.*',
                     'roles.rol_name',
+                    'usuarios_has_roles.id_role',
                     'personals.nombres',
                     'personals.apellido_paterno',
                     'personals.apellido_materno',
@@ -129,7 +131,7 @@ class UsuarioController extends Controller
         }
     }
 
-    public function update(UsuarioByRoleRequest $request)
+    public function update(UsuarioByUsuHasRoleRequest $request)
     {
         try {
             $ciudad = Ciudad::where('nombre_ciudad', $request->input('ciudad'))
@@ -190,6 +192,7 @@ class UsuarioController extends Controller
                 ->select(
                     'usuarios.*',
                     'roles.rol_name',
+                    'usuarios_has_roles.id_role',
                     'personals.nombres',
                     'personals.apellido_paterno',
                     'personals.apellido_materno',

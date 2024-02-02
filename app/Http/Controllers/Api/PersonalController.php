@@ -13,7 +13,6 @@ use Throwable;
 
 class PersonalController extends Controller
 {
-
     public function index(Request $request)
     {
         try {
