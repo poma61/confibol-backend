@@ -9,7 +9,7 @@ use App\Models\Personal;
 use App\Models\Producto;
 use App\Models\Role;
 use App\Models\Usuario;
-use App\Models\UsuarioRole;
+use App\Models\UsuarioHasRole;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -57,7 +57,7 @@ class DatabaseSeeder extends Seeder
             'rol_name' => 'usuario',
         ]);
 
-        UsuarioRole::create([
+        UsuarioHasRole::create([
             'id_user' => 1,
             'id_role' => 1,
             'status' => true,
